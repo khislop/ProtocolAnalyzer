@@ -14,6 +14,8 @@
 // ***************************************************************************
 resultsC::resultsC() {
   totalPacketCount = 0;
+  totalEthernet2 = 0;
+  total8023 = 0;
 }
 
 
@@ -26,4 +28,6 @@ resultsC::resultsC() {
 void resultsC::displayResults() {
 
   std::cout << "A total of " << totalPacketCount << " packets processed." << std::endl;
+  std::cout << "A total of " << totalEthernet2 << " Ethernet 2 packets processed." << std::endl;
+  std::cout << "A total of " << total8023 << " 802.3 packets processed." << std::endl;
 }

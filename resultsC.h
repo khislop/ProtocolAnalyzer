@@ -12,10 +12,14 @@
 class resultsC {
   protected:
    int totalPacketCount;
+   int totalEthernet2;
+   int total8023;
 
   public:
    resultsC();
    void incrementPacketCount() { totalPacketCount++; };
+   void incrementEthernet2() { totalEthernet2++; };
+   void increment8023() { total8023++; };
    void displayResults();
 };
 

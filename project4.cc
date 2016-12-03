@@ -1,10 +1,4 @@
-//
-//  project4.cpp
-//  project4
-//
-//  Created by Phillip Romig on 4/3/12.
-//  Copyright 2012 Colorado School of Mines. All rights reserved.
-//
+
 
 #include "project4.h"
 
@@ -19,6 +13,18 @@ void pk_processor(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *
 
   resultsC* results = (resultsC*)user;
   results->incrementPacketCount();
+  
+  // Check byte 12 and 13 to tell if packet is 803.2 or Ethernet 2
+  if((int)packet[12]*256 + (int)packet[13] >= 1536){
+  	//cout << "ETHERNET 2" << endl;
+    results->incrementEthernet2();
+  }else if((int)packet[12]*256 + (int)packet[13] <= 1500){
+  	//cout << "802.3" << endl;
+    results->increment8023();
+  }
+  
+  
+  //std::cout << (int)packet[12]*256 + (int)packet[13] << std::endl;
 
   return;
 }
