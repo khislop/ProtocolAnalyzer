@@ -15,6 +15,7 @@
 #include <string.h>
 #include <iostream>
 #include <pcap/pcap.h>
+#include <cmath>
 
 // Include files specific to this project.
 #include "resultsC.h"

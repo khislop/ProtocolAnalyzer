@@ -2,7 +2,7 @@
 
 #include "project4.h"
 
-
+int COUNT = 0;
 // ****************************************************************************
 // * pk_processor()
 // *  Most of the work done by the program will be done here (or at least it
@@ -10,6 +10,7 @@
 // *  packet in the savefile.
 // ****************************************************************************
 void pk_processor(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *packet) {
+  COUNT++;
 
   resultsC* results = (resultsC*)user;
   results->incrementPacketCount();
@@ -51,6 +52,9 @@ void pk_processor(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *
   }
   
   
+  results->insertSMac(pow(packet[0], 5) + pow(packet[1], 4) + pow(packet[2], 3) + pow(packet[3], 2) + pow(packet[4], 1) + packet[5]);
+  results->insertDMac(pow(packet[6], 5) + pow(packet[7], 4) + pow(packet[8], 3) + pow(packet[9], 2) + pow(packet[10], 1) + packet[11]);
+  
   //std::cout << (int)packet[12]*256 + (int)packet[13] << std::endl;
 
   return;
@@ -68,6 +72,7 @@ void processNetworkLayer(const u_char *packet, int layer3, resultsC* results, in
         int t = (int)packet[start+9];
         //ICMP
         if(t == 1){
+            cout << COUNT << endl;
             layer4 = 1;
         }
         //TCP
@@ -135,13 +140,13 @@ void processNetworkLayer(const u_char *packet, int layer3, resultsC* results, in
 void processTransportLayer(const u_char *packet, int layer4, resultsC* results, int start, int len){
     //ICMP
     if(layer4 == 1){
-        results->icmpStats(1);
+        results->icmpStats(len - 8);
     }
     //TCP
     else if(layer4 == 2){
         int t = (int)(packet[start+12] - (packet[(start+12)]%16)) / 4;
         results->tcpStats(len - t);
-        //cout << (int)(packet[start+12] - (packet[(start+12)]%16)) / 4 << endl;
+        //cout << len << endl;
         
     }
     //UDP

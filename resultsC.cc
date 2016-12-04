@@ -52,6 +52,10 @@ resultsC::resultsC() {
   sumICMP = 0;
   sumTCP = 0;
   sumUDP = 0;
+  
+  syn = 0;
+  fin = 0;
+  frag = 0;
 }
 
 void resultsC::arpStats(int input){
@@ -155,6 +159,11 @@ void resultsC::displayResults() {
   std::cout << "TCP" << "\t" << totalTCP << "\t" << minTCP << "\t" << maxTCP << "\t" << aveTCP << std::endl;
   std::cout << "ICMP" << "\t" << totalICMP << "\t" << minICMP << "\t" << maxICMP << "\t" << aveICMP << std::endl;
   std::cout << "Other" << "\t" << totalOtherTransportLayer << std::endl;
+  
+  //Protocol Details
+  std::cout << "A total of " << sMac.size() << " Unique source mac addresses." << std::endl;
+  std::cout << "A total of " << dMac.size() << " Unique destination mac addresses." << std::endl;
+  
   
   
   

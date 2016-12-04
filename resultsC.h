@@ -6,8 +6,12 @@
 //  Copyright 2012 Colorado School of Mines. All rights reserved.
 //
 
+
 #ifndef resultsC_h
 #define resultsC_h
+#include <set>
+
+using namespace std;
 
 class resultsC {
   protected:
@@ -50,6 +54,20 @@ class resultsC {
     int sumICMP;
     int sumTCP;
     int sumUDP;
+    
+    // Protocol Details
+    set<long long> sMac;
+    set<long long> dMac;
+    set<long long> sIP;
+    set<long long> dIP;
+    set<long long> sUDPPort;
+    set<long long> dUDPPort;
+    set<long long> sTCPPort;
+    set<long long> dTCPPort;
+    
+    int syn;
+    int fin;
+    int frag;
 
   public:
    resultsC();
@@ -68,6 +86,21 @@ class resultsC {
    void icmpStats(int input);
    void tcpStats(int input);
    void udpStats(int input);
+   
+   // Protocol Details
+   void insertSMac(long long input){sMac.insert(input);};
+   void insertDMac(long long input){dMac.insert(input);};
+   void insertSIP(long long input){sIP.insert(input);};
+   void insertDIP(long long input){dIP.insert(input);};
+   void insertSUDPPort(long long input){sUDPPort.insert(input);};
+   void insertDUDPPort(long long input){dUDPPort.insert(input);};
+   void insertSTCPPort(long long input){sTCPPort.insert(input);};
+   void insertDTCPPort(long long input){dTCPPort.insert(input);};
+   
+   
+   void incrementsyn() { syn++; };
+   void incrementfin() { fin++; };
+   void incrementfrag() { frag++; };
 };
 
 #endif
