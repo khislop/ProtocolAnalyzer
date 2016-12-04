@@ -21,6 +21,8 @@
 
 // Include files specific to this project.
 void pk_processor(u_char *, const struct pcap_pkthdr *, const u_char *);
+void processNetworkLayer(const u_char *packet, int layer3, resultsC* results, int start);
+void processTransportLayer(const u_char *packet, int layer4, resultsC* results, int start, int len);
 
 #endif
 
