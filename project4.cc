@@ -52,8 +52,8 @@ void pk_processor(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *
   }
   
   
-  results->insertSMac(pow(packet[0], 5) + pow(packet[1], 4) + pow(packet[2], 3) + pow(packet[3], 2) + pow(packet[4], 1) + packet[5]);
-  results->insertDMac(pow(packet[6], 5) + pow(packet[7], 4) + pow(packet[8], 3) + pow(packet[9], 2) + pow(packet[10], 1) + packet[11]);
+  results->insertDMac((int)packet[0]*pow(255, 5) + packet[1]*pow(255, 4) + packet[2]*pow(255, 3) + packet[3]*pow(255, 2) + packet[4]*pow(255, 1) + packet[5]);
+  results->insertSMac((int)packet[6]*pow(255, 5) + packet[7]*pow(255, 4) + packet[8]*pow(255, 3) + packet[9]*pow(255, 2) + packet[10]*pow(255, 1) + packet[11]);
   
   //std::cout << (int)packet[12]*256 + (int)packet[13] << std::endl;
 
