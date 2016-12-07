@@ -51,7 +51,7 @@ void pk_processor(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *
     processNetworkLayer(packet, layer3, results, 22);
   }
   
-  
+  //Count unique mac
   results->insertDMac((int)packet[0]*pow(255, 5) + packet[1]*pow(255, 4) + packet[2]*pow(255, 3) + packet[3]*pow(255, 2) + packet[4]*pow(255, 1) + packet[5]);
   results->insertSMac((int)packet[6]*pow(255, 5) + packet[7]*pow(255, 4) + packet[8]*pow(255, 3) + packet[9]*pow(255, 2) + packet[10]*pow(255, 1) + packet[11]);
   
@@ -72,7 +72,6 @@ void processNetworkLayer(const u_char *packet, int layer3, resultsC* results, in
         int t = (int)packet[start+9];
         //ICMP
         if(t == 1){
-            cout << COUNT << endl;
             layer4 = 1;
         }
         //TCP
@@ -87,7 +86,14 @@ void processNetworkLayer(const u_char *packet, int layer3, resultsC* results, in
         else{
             layer4 = 0;
         }
+        //Count unique ip
         processTransportLayer(packet, layer4, results, start + (((int)packet[start])%16), len);
+        results->insertSIP((int)packet[start + 12]*pow(255, 3) + packet[start + 13]*pow(255, 2) + packet[start + 14]*pow(255, 1) + packet[start + 15]);
+        results->insertDIP((int)packet[start + 16]*pow(255, 3) + packet[start + 17]*pow(255, 2) + packet[start + 18]*pow(255, 1) + packet[start + 19]);
+        //Count fragmented packages
+        if((packet[start + 6] & 32) == 32){
+            results->incrementFrag();
+        }
     }
     //arp
     else if(layer3 == 2){
@@ -120,6 +126,14 @@ void processNetworkLayer(const u_char *packet, int layer3, resultsC* results, in
             layer4 = 0;
         }
         processTransportLayer(packet, layer4, results, start+40, len);
+        int sIP = 0;
+        int dIP = 0;
+        for(int q = 0; q < 16; q++){
+            sIP += packet[start + 8 + q];
+            dIP += packet[start + 24 + q];
+        }
+        results->insertSIP(sIP);
+        results->insertDIP(dIP);
     }
     //other
     else if(layer3 == 0){
@@ -146,13 +160,23 @@ void processTransportLayer(const u_char *packet, int layer4, resultsC* results, 
     else if(layer4 == 2){
         int t = (int)(packet[start+12] - (packet[(start+12)]%16)) / 4;
         results->tcpStats(len - t);
-        //cout << len << endl;
-        
+        //Count unique TCP ports
+        results->insertSTCPPort(packet[start + 0] * 256 + packet[start + 1]);
+        results->insertDTCPPort(packet[start + 2] * 256 + packet[start + 3]);
+        //Count syn and fin bits
+        if((packet[start + 13] & 2) == 2){
+            results->incrementSyn();
+        }
+        if((packet[start + 13] & 1) == 1){
+            results->incrementFin();
+        }
     }
     //UDP
     else if(layer4 == 3){
         results->udpStats(len - 8);
-        
+        //Count unique UDP ports
+        results->insertSUDPPort(packet[start + 0] * 256 + packet[start + 1]);
+        results->insertDUDPPort(packet[start + 2] * 256 + packet[start + 3]);
     }
     //other
     else if(layer4 == 0){

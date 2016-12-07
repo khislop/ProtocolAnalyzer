@@ -79,6 +79,9 @@ class resultsC {
    void incrementARP() { totalARP++; };
    void incrementOtherNetworkLayer() { totalOtherNetworkLayer++; };
    void incrementOtherTransportLayer() { totalOtherTransportLayer++; };
+   void incrementSyn() { syn++; };
+   void incrementFin() { fin++; };
+   void incrementFrag() { frag++; };
    void displayResults();
    void arpStats(int input);
    void ipv4Stats(int input);

@@ -142,7 +142,7 @@ void resultsC::displayResults() {
 
   std::cout << "A total of " << totalPacketCount << " packets processed." << std::endl;
   //Link Layer
-  std::cout << "Link Layer:" << std::endl;
+  std::cout << "\nLink Layer:" << std::endl;
   std::cout << "A total of " << totalEthernet2 << " Ethernet 2 packets processed." << std::endl;
   std::cout << "A total of " << total8023 << " 802.3 packets processed." << std::endl;
   //Network Layer
@@ -161,8 +161,18 @@ void resultsC::displayResults() {
   std::cout << "Other" << "\t" << totalOtherTransportLayer << std::endl;
   
   //Protocol Details
+  std::cout << "\nProtocol Details:" << std::endl;
   std::cout << "A total of " << sMac.size() << " Unique source mac addresses." << std::endl;
   std::cout << "A total of " << dMac.size() << " Unique destination mac addresses." << std::endl;
+  std::cout << "A total of " << sIP.size() << " Unique source IP addresses." << std::endl;
+  std::cout << "A total of " << dIP.size() << " Unique destination IP addresses." << std::endl;
+  std::cout << "A total of " << sUDPPort.size() << " Unique UDP source ports." << std::endl;
+  std::cout << "A total of " << dUDPPort.size() << " Unique UDP destination ports." << std::endl;
+  std::cout << "A total of " << sTCPPort.size() << " Unique TCP source ports." << std::endl;
+  std::cout << "A total of " << dTCPPort.size() << " Unique TCP destination ports." << std::endl;
+  std::cout << "A total of " << syn << " SYN packages." << std::endl;
+  std::cout << "A total of " << fin << " FIN packages." << std::endl;
+  std::cout << "A total of " << frag << " Fragmented packages." << std::endl;
   
   
   
